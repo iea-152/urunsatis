@@ -1,0 +1,82 @@
+﻿@model urunsatis.Models.User
+
+@{
+    Layout = null; // Layout kullanmıyoruz, giriş sayfası gibi bağımsız olsun
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kayıt Ol | Ürün Satış</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="~/css/adminlte.min.css">
+</head>
+<body class="hold-transition register-page">
+    <div class="register-box">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a href="/" class="h1"><b>Ürün</b>Satış</a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Yeni üyelik oluşturun</p>
+
+                @if (ViewBag.Hata != null)
+                {
+                    <div class="alert alert-danger text-sm">@ViewBag.Hata</div>
+                }
+
+                <form method="post">
+                    <div class="input-group mb-3">
+                        <input asp-for="FullName" type="text" class="form-control" placeholder="Ad Soyad" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input asp-for="Email" type="email" class="form-control" placeholder="Email" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Şifre" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                <input type="checkbox" id="agreeTerms" name="terms" value="agree" required>
+                                <label for="agreeTerms">
+                                    Kuralları kabul ediyorum
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Kayıt Ol</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="social-auth-links text-center">
+                    <a asp-action="Index" class="text-center">Zaten üyeliğim var</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

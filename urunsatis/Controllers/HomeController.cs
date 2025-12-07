@@ -1,32 +1,53 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using urunsatis.Models;
+using urunsatis.Utility;
+using Microsoft.AspNetCore.Authorization;
 
 namespace urunsatis.Controllers
-{
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+
+{
+    [Authorize]
+    public class HomeController : Controller
+    {   
+        private readonly UygulamaDbContext _context;
+
+        public HomeController(UygulamaDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        // Bu metot hem ana sayfayı açar, hem de kategori seçilince filtreler
+        public IActionResult Index(int? id) // Buradaki 'id' kategori ID'sidir
         {
-            return View();
+            var urunler = _context.Products.AsQueryable();
+
+            if (id != null) // Eğer bir kategoriye tıklanmışsa filtrele
+            {
+                urunler = urunler.Where(x => x.CategoryId == id);
+            }
+
+            return View(urunler.ToList());
         }
 
         public IActionResult Privacy()
         {
             return View();
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        // "search" parametresi silindi
+        public IActionResult UrunleriGetir(int? id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var urunler = _context.Products.Include(p => p.Category).AsQueryable();
+
+            if (id != null)
+            {
+                urunler = urunler.Where(x => x.CategoryId == id);
+            }
+
+            // Arama filtreleme kodları silindi
+
+            return PartialView("_UrunListesi", urunler.ToList());
         }
     }
 }

@@ -1,0 +1,60 @@
+﻿@model List<urunsatis.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Sepetim";
+    decimal toplam = Model.Sum(x => x.Price * x.Quantity);
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Sepetim</h2>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-warning">
+            Sepetinizde henüz ürün yok. <a href="/Home/Index">Alışverişe Başla</a>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover m-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Ürün</th>
+                            <th>Fiyat</th>
+                            <th>Adet</th>
+                            <th>Toplam</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "https://via.placeholder.com/50" : item.ImageUrl)" width="50" class="rounded mr-2">
+                                    @item.ProductName
+                                </td>
+                                <td>@item.Price.ToString("c")</td>
+                                <td>@item.Quantity</td>
+                                <td>@((item.Price * item.Quantity).ToString("c"))</td>
+                                <td>
+                                    <a asp-action="RemoveFromCart" asp-route-id="@item.ProductId" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash"></i> Sil
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Genel Toplam: <span class="text-success">@toplam.ToString("c")</span></h4>
+                <a asp-action="Payment" class="btn btn-success btn-lg shadow-sm">
+                    <i class="fas fa-credit-card mr-2"></i> Ödeme Adımına Geç
+                </a>
+            </div>
+        </div>
+    }
+</div>

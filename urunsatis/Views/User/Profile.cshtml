@@ -1,0 +1,36 @@
+﻿@model urunsatis.Models.User
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4>Profil Bilgilerim</h4>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Mesaj != null)
+                    {
+                        <div class="alert alert-success">@ViewBag.Mesaj</div>
+                    }
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label>Ad Soyad</label>
+                            <input type="text" asp-for="FullName" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Email Adresi</label>
+                            <input type="email" asp-for="Email" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Yeni Şifre (Değişmeyecekse boş bırakın)</label>
+                            <input type="password" name="Password" class="form-control" />
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema; // <-- BUNU EKLE
+using Microsoft.AspNetCore.Http; // <-- BUNU EKLE
 
 namespace urunsatis.Models
 {
     public class Product
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -13,13 +15,19 @@ namespace urunsatis.Models
 
         public string? Description { get; set; }
 
-        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
-        public string? ImageUrl { get; set; }
+        public string? ImageUrl { get; set; } // Bu veritabanında yol tutacak
 
-        // Category ilişki
+        public int Stock { get; set; } = 0;
+
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Category? Category { get; set; }
+
+        // --- YENİ EKLENEN KISIM ---
+        [NotMapped] // Veritabanına bu kolon eklenmesin dedik
+        public IFormFile? ImageUpload { get; set; }
     }
 }

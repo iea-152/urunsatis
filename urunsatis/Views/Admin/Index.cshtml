@@ -1,0 +1,154 @@
+﻿@model List<urunsatis.Models.Product>
+
+@{
+    ViewData["Title"] = "Yönetim Paneli";
+    var uyeler = ViewBag.SonUyeler as List<urunsatis.Models.User>;
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <h1 class="m-0 text-dark">Dükkan Özeti</h1>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                    <div class="inner"><h3>@ViewBag.UrunSayisi</h3><p>Ürünler</p></div>
+                    <div class="icon"><i class="fas fa-shopping-bag"></i></div>
+                    <a asp-controller="Product" asp-action="Index" class="small-box-footer">
+                        Listeye Git <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-success">
+                    <div class="inner"><h3>@ViewBag.KategoriSayisi</h3><p>Kategoriler</p></div>
+                    <div class="icon"><i class="fas fa-list"></i></div>
+                    <a asp-controller="Category" asp-action="Index" class="small-box-footer">
+                        Listeye Git <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning">
+                    <div class="inner"><h3>@ViewBag.KullaniciSayisi</h3><p>Üyeler</p></div>
+                    <div class="icon"><i class="fas fa-users"></i></div>
+                    <a asp-controller="Admin" asp-action="UserList" class="small-box-footer">
+                        Listeye Git <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-danger">
+                    <div class="inner"><h3>@Model.Count</h3><p>Kritik Stok</p></div>
+                    <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <a href="#stokTablosu" class="small-box-footer">
+                        Aşağı İn <i class="fas fa-arrow-circle-down"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+
+            <div class="col-md-6">
+                <div class="card card-danger card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-box-open mr-1"></i> Tükenmek Üzere Olanlar</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Ürün</th>
+                                    <th>Stok</th>
+                                    <th>Fiyat</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Count == 0)
+                                {
+                                    <tr><td colspan="4" class="text-center text-muted">Stok sorunu olan ürün yok.</td></tr>
+                                }
+                                else
+                                {
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@item.Name</td>
+                                            <td><span class="badge bg-danger">@item.Stock Adet</span></td>
+                                            <td>@item.Price.ToString("c")</td>
+                                            <td>
+                                                <a asp-controller="Product" asp-action="Index" class="btn btn-xs btn-primary">
+                                                    Stok Ekle
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-users mr-1"></i> Son Kayıt Olan Üyeler</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Ad Soyad</th>
+                                    <th>Email</th>
+                                    <th>Rol</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (uyeler == null || uyeler.Count == 0)
+                                {
+                                    <tr><td colspan="3" class="text-center">Henüz üye yok.</td></tr>
+                                }
+                                else
+                                {
+                                    @foreach (var uye in uyeler)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <img src="/assets/img/avatar5.png" class="img-circle img-size-32 mr-2">
+                                                @uye.FullName
+                                            </td>
+                                            <td>@uye.Email</td>
+                                            <td>
+                                                @if (uye.Role == "Admin")
+                                                {
+                                                    <span class="badge bg-danger">Yönetici</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Üye</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
